@@ -5,7 +5,10 @@ var operators = ["-", "+", "/", "*"];
 $(document).ready(function () {
 
     $("#bclr")
-        .click(clearDisplay());
+        .click(function(){
+	allInputs=[];
+	$("#display").val(allInputs);
+});
     $("#b0, #b1,#b2,#b3,#b4,#b5,#b6,#b7,#b8,#b9,#bdel,#beq,#bdiv,#bplus,#btimes,#bsub")
         .click(function (a) {
             var item = a.target.innerHTML;
