@@ -22,6 +22,15 @@ $(document).keydown(function (e) {
     e = e || event;
     console.log(e.keyCode);
     for (var i = 0; i < keycodes.length; i++) {
+        if(e.shiftKey && e.which == 189 ){
+            allInputs.push("-");
+
+            break;
+        }
+        if(e.shiftKey && e.which == 187){
+            allInputs.push("+");
+            break;
+        }
         if (e.keyCode >= 106 && e.keyCode <= 111) {
             switch (e.keyCode) {
                 case 106:
