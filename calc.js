@@ -44,7 +44,7 @@ $(document).keydown(function (e) {
             appendToDisplay(allInputs);
             break;
         } else if (e.keyCode == 13) {
-            var answer = GetAnswer();
+            var answer = getAnswer();
             $("#display").val(answer);
             allInputs = [];
             break;
@@ -71,16 +71,16 @@ $(document).ready(function () {
             }
 
             if (symbol === "=") {
-                var answer = GetAnswer();
+                var answer = getAnswer();
                 $("#display").val(answer);
                 allInputs = [];
             }
         });
 });
 
-function GetAnswer() {
+function getAnswer() {
     var operators = ["-", "+", "/", "*"];
-    var i = indexofOperator(allInputs, operators);
+    var i = indexOfOperator(allInputs, operators);
     var operator = allInputs[i];
     var answer = "";
 
@@ -120,7 +120,7 @@ function appendToDisplay(list) {
     $("#display").val(expression);
 }
 
-function indexofOperator(source, target) {
+function indexOfOperator(source, target) {
     for (var i = 0; i < source.length; i++) {
         for (var j = 0; j < target.length; j++) {
             if (source[i] === target[j]) {
