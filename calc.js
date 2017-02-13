@@ -1,7 +1,6 @@
 ﻿var allInputs = [];
 
 $(document).keydown(function (e) {
-    e = e || event;
     console.log(e.keyCode);
 
     if (e.shiftKey && e.which == 189) {
