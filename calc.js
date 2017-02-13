@@ -1,11 +1,10 @@
 ﻿var allInputs = [];
-var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-var operators = ["-", "+", "/", "*"];
-var keycodes = [8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 107, 109, 106, 111];
 
 $(document).keydown(function (e) {
     e = e || event;
     console.log(e.keyCode);
+
+    var keycodes = [8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 107, 109, 106, 111];
 
     for (var i = 0; i < keycodes.length; i++) {
         if (e.shiftKey && e.which == 189) {
@@ -62,6 +61,7 @@ $(document).ready(function () {
 
     $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
         .click(function (a) {
+            var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
             var item = a.target.innerHTML;
 
             allInputs.push(item);
@@ -79,6 +79,7 @@ $(document).ready(function () {
 });
 
 function GetAnswer() {
+    var operators = ["-", "+", "/", "*"];
     var i = indexofOperator(allInputs, operators);
     var operator = allInputs[i];
     var answer = "";
