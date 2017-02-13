@@ -120,12 +120,12 @@ const calculator = ((expression) => {
 })(expression);
 
 
-$(document).keydown((e) => calculator.process(e.key));
-
 $(document).ready(() => {
     const $symbolButtons = $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub");
     const $clearButton = $("#bclr");
 
     $symbolButtons.on('click', (e) => calculator.process(e.target.innerHTML));
+    $(document).on('keydown', (e) => calculator.process(e.key));
+
     $clearButton.on('click', calculator.clear);
 });
