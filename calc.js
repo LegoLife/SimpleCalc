@@ -4,51 +4,41 @@ $(document).keydown(function (e) {
     e = e || event;
     console.log(e.keyCode);
 
-    var keycodes = [8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 107, 109, 106, 111];
+    if (e.shiftKey && e.which == 189) {
+        allInputs.push("-");
+    }
 
-    for (var i = 0; i < keycodes.length; i++) {
-        if (e.shiftKey && e.which == 189) {
-            allInputs.push("-");
-            break;
-        }
+    if (e.shiftKey && e.which == 187) {
+        allInputs.push("+");
+    }
 
-        if (e.shiftKey && e.which == 187) {
-            allInputs.push("+");
-            break;
+    if (e.keyCode >= 106 && e.keyCode <= 111) {
+        switch (e.keyCode) {
+            case 106:
+                allInputs.push("*");
+                break;
+            case 107:
+                allInputs.push("+");
+                break;
+            case 109:
+                allInputs.push("-");
+                break;
+            case 111:
+                allInputs.push("/");
+                break;
         }
+    }
 
-        if (e.keyCode >= 106 && e.keyCode <= 111) {
-            switch (e.keyCode) {
-                case 106:
-                    allInputs.push("*");
-                    break;
-                case 107:
-                    allInputs.push("+");
-                    break;
-                case 109:
-                    allInputs.push("-");
-                    break;
-                case 111:
-                    allInputs.push("/");
-                    break;
-            }
-            break;
-        }
-
-        if (e.keyCode >= 48 && e.keyCode <= 57) {
-            allInputs.push(String.fromCharCode(e.keyCode));
-            appendToDisplay(allInputs);
-            break;
-        } else if (e.keyCode >= 96 && e.keyCode <= 105) {
-            allInputs.push(String.fromCharCode(e.keyCode - 48));
-            appendToDisplay(allInputs);
-            break;
-        } else if (e.keyCode == 13) {
-            var answer = getAnswer();
-            $("#display").val(answer);
-            allInputs = [];
-            break;
-        }
+    if (e.keyCode >= 48 && e.keyCode <= 57) {
+        allInputs.push(String.fromCharCode(e.keyCode));
+        appendToDisplay(allInputs);
+    } else if (e.keyCode >= 96 && e.keyCode <= 105) {
+        allInputs.push(String.fromCharCode(e.keyCode - 48));
+        appendToDisplay(allInputs);
+    } else if (e.keyCode == 13) {
+        var answer = getAnswer();
+        $("#display").val(answer);
+        allInputs = [];
     }
 });
 
