@@ -1,40 +1,28 @@
 ﻿var allInputs = [];
 
 $(document).keydown(function (e) {
-    console.log(e.keyCode);
+    console.log(e.key);
 
-    if (e.shiftKey && e.which == 189) {
+    if (e.key === "-") {
         allInputs.push("-");
     }
 
-    if (e.shiftKey && e.which == 187) {
+    if (e.key === "+") {
         allInputs.push("+");
     }
 
-    if (e.keyCode >= 106 && e.keyCode <= 111) {
-        switch (e.keyCode) {
-            case 106:
-                allInputs.push("*");
-                break;
-            case 107:
-                allInputs.push("+");
-                break;
-            case 109:
-                allInputs.push("-");
-                break;
-            case 111:
-                allInputs.push("/");
-                break;
-        }
+    if (e.key === "*") {
+        allInputs.push("*");
     }
 
-    if (e.keyCode >= 48 && e.keyCode <= 57) {
-        allInputs.push(String.fromCharCode(e.keyCode));
+    if (e.key === "/") {
+        allInputs.push("/");
+    }
+
+    if (e.key >= "0" && e.key <= "9") {
+        allInputs.push(e.key);
         appendToDisplay(allInputs);
-    } else if (e.keyCode >= 96 && e.keyCode <= 105) {
-        allInputs.push(String.fromCharCode(e.keyCode - 48));
-        appendToDisplay(allInputs);
-    } else if (e.keyCode == 13) {
+    } else if (e.key == "Enter") {
         var answer = getAnswer();
         $("#display").val(answer);
         allInputs = [];
