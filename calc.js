@@ -60,17 +60,17 @@ $(document).ready(function () {
         });
 
     $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
-        .click(function (a) {
+        .click(function (e) {
             var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-            var item = a.target.innerHTML;
+            var symbol = e.target.innerHTML;
 
-            allInputs.push(item);
+            allInputs.push(symbol);
 
-            if (numbers.includes(item.toString())) {
+            if (numbers.includes(symbol.toString())) {
                 appendToDisplay(allInputs);
             }
 
-            if (a.target.innerHTML === "=") {
+            if (symbol === "=") {
                 var answer = GetAnswer();
                 $("#display").val(answer);
                 allInputs = [];
@@ -113,11 +113,11 @@ function clearDisplay() {
 }
 
 function appendToDisplay(list) {
-    var a = "";
+    var expression = "";
     for (var i = 0; i < list.length; i++) {
-        a += list[i].toString();
+        expression += list[i].toString();
     }
-    $("#display").val(a);
+    $("#display").val(expression);
 }
 
 function indexofOperator(source, target) {
