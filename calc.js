@@ -43,11 +43,7 @@ $(document).keydown(function (e) {
 });
 
 $(document).ready(function () {
-    $("#bclr")
-        .click(function () {
-            allInputs = [];
-            $("#display").val(allInputs);
-        });
+    $("#bclr").click(clearDisplay);
 
     $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
         .click(function (e) {
