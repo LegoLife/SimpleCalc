@@ -1,22 +1,8 @@
 ﻿var allInputs = [];
-var operators = ["-", "+", "/", "*"];
-var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 $(document).keydown(function (e) {
     console.log(e.key);
-
-    if (operators.includes(e.key)) {
-        appendToExpression(e.key);
-    }
-
-    if (numbers.includes(e.key)) {
-        appendToExpression(e.key);
-        displayCurrentExpression();
-    }
-
-    if (e.key == "Enter") {
-        displayResult();
-    }
+    processSymbol(e.key);
 });
 
 $(document).ready(function () {
@@ -24,22 +10,30 @@ $(document).ready(function () {
 
     $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
         .click(function (e) {
-            var symbol = e.target.innerHTML;
-
-            appendToExpression(symbol);
-
-            if (numbers.includes(symbol)) {
-                displayCurrentExpression();
-            }
-
-            if (symbol === "=") {
-                displayResult();
-            }
+            processSymbol(e.target.innerHTML);
         });
 });
 
-function getAnswer() {
-    var expressionParts = getExpressionParts();
+function processSymbol(symbol) {
+    var operators = ["-", "+", "/", "*"];
+    var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    var finalizers = ["=", "Enter"];
+
+    if (operators.includes(symbol)) {
+        appendToExpression(symbol);
+    }
+
+    if (numbers.includes(symbol)) {
+        appendToExpression(symbol);
+        displayCurrentExpression();
+    }
+
+    if (finalizers.includes(symbol)) {
+        displayResult(operators);
+    }
+}
+
+function getAnswer(expressionParts, operators) {
     var i = indexOfOperator(expressionParts, operators);
     var operator = expressionParts[i];
     var answer = "";
@@ -88,8 +82,10 @@ function clearDisplay() {
     clearExpression();
 }
 
-function displayResult() {
-    display(getAnswer());
+function displayResult(operators) {
+    display(
+        getAnswer(getExpressionParts(), operators)
+    );
     clearExpression();
 }
 
