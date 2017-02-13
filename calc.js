@@ -1,147 +1,120 @@
-﻿var allInputs = [];
-var numList = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-var operators = ["-", "+", "/", "*"];
-var keycodes = [8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 107, 109, 106, 111];
+﻿const expression = (() => {
+    const OPERATORS = {
+        "-": (a, b) => a - b,
+        "+": (a, b) => a + b,
+        "*": (a, b) => a * b,
+        "/": (a, b) => a / b
+    };
+    const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const FINALIZERS = ["=", "Enter"];
+    let symbols = [];
 
-//$(document).keypress(function (e) {
-//    e = e || event;
-//    console.log(e.keyCode);
-//    for (var i = 0; i < keycodes.length; i++) {
+    const append = (symbol) => symbols.push(symbol);
 
-//        if (e.keyCode >= 106 && e.keyCode <= 111) {
-//            var c = String.fromCharCode(e.keyCode);
-//            allInputs.push(c);
+    const clear = () => symbols = [];
 
-//            appendToDisplay(allInputs);
-//            break;
-//        }
-//    }
-//})
+    const calculate = () => {
+        const parts = toArray();
 
-$(document).keydown(function (e) {
-    e = e || event;
-    console.log(e.keyCode);
-    for (var i = 0; i < keycodes.length; i++) {
-        if(e.shiftKey && e.which == 189 ){
-            allInputs.push("-");
-
-            break;
-        }
-        if(e.shiftKey && e.which == 187){
-            allInputs.push("+");
-            break;
-        }
-        if (e.keyCode >= 106 && e.keyCode <= 111) {
-            switch (e.keyCode) {
-                case 106:
-                    allInputs.push("*");
-                    break;
-                case 107:
-                    allInputs.push("+");
-                    break;
-                case 109:
-                    allInputs.push("-");
-                    break;
-                case 111:
-                    allInputs.push("/");
-                    break;
+        const result = parts.reduce(
+            (resultSoFar, part, index, allParts) => {
+                if (isOperator(part)) {
+                    // All operators are assumed to be binary
+                    const nextPart = allParts[index + 1];
+                    const operatorFn = OPERATORS[part];
+                    return operatorFn(resultSoFar, nextPart);
+                } else {
+                    return resultSoFar;
+                }
             }
-            break;
+        );
 
-        }
-        if (e.keyCode >= 48 && e.keyCode <= 57) {
-            allInputs.push(String.fromCharCode(e.keyCode));
+        return result;
+    };
 
-            appendToDisplay(allInputs);
-            break;
+    const isOperator = (symbol) => Object.keys(OPERATORS).includes(symbol);
+    const isNumber = (symbol) => NUMBERS.includes(symbol);
+    const isFinal = (symbol) => FINALIZERS.includes(symbol);
 
-        } else if (e.keyCode >= 96 && e.keyCode <= 105) {
-            allInputs.push(String.fromCharCode(e.keyCode - 48));
+    const toString = () => symbols.join("");
 
-            appendToDisplay(allInputs);
-            break;
-        } else if (e.keyCode == 13) {
-            var answer = GetAnswer();
-            $("#display").val(answer);
-            allInputs = [];
-            break;
-        }
+    const toArray = () => {
+        const lastOf = (array) => array[array.length - 1]; // [1, 2, 3] => 3
+        const initial = (array) => array.slice(0, -1);     // [1, 2, 3] => [1, 2]
 
-    }
-})
+        // Concatenate consecutive non-operator symbols into their own parts
+        const mergedParts = symbols.reduce(
+            (partsSoFar, symbol) => {
+                const previousPart = lastOf(partsSoFar);
 
-$(document).ready(function () {
-
-    $("#bclr")
-        .click(function () {
-            allInputs = [];
-            $("#display").val(allInputs);
-        });
-    $("#b0, #b1,#b2,#b3,#b4,#b5,#b6,#b7,#b8,#b9,#bdel,#beq,#bdiv,#bplus,#btimes,#bsub")
-        .click(function (a) {
-            var item = a.target.innerHTML;
-            allInputs.push(item);
-            if (numList.includes(item.toString())) {
-                appendToDisplay(allInputs);
+                if (isOperator(symbol) || isOperator(previousPart)) {
+                    return [...partsSoFar, symbol];
+                } else {
+                    return [...initial(partsSoFar), previousPart.concat(symbol)];
+                }
             }
+        );
+
+        // Convert non-operator parts into numbers
+        const parts = mergedParts.map(
+            (part) => isOperator(part) ? part : Number(part)
+        );
+
+        return parts;
+    };
+
+    return {
+        append,
+        clear,
+        calculate,
+        helpers: {
+            isOperator,
+            isNumber,
+            isFinal
+        },
+        toString,
+        toArray
+    };
+})();
 
 
-            if (a.target.innerHTML === "=") {
-                var answer = GetAnswer();
-                $("#display").val(answer);
-                allInputs = [];
-            }
-        });
+const calculator = ((expression) => {
+    const display = (string) => $("#display").val(string);
+
+    const process = (symbol) => {
+        if (expression.helpers.isOperator(symbol)) {
+            expression.append(symbol);
+        }
+
+        if (expression.helpers.isNumber(symbol)) {
+            expression.append(symbol);
+            display(expression.toString());
+        }
+
+        if (expression.helpers.isFinal(symbol)) {
+            display(expression.calculate());
+            expression.clear();
+        }
+    };
+
+    const clear = () => {
+        display("");
+        expression.clear();
+    };
+
+    return {
+        process,
+        clear
+    };
+})(expression);
+
+
+$(document).ready(() => {
+    const $symbolButtons = $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub");
+    const $clearButton = $("#bclr");
+
+    $symbolButtons.on('click', (e) => calculator.process(e.target.innerHTML));
+    $(document).on('keydown', (e) => calculator.process(e.key));
+
+    $clearButton.on('click', calculator.clear);
 });
-
-function GetAnswer() {
-    var i = indexofOperator(allInputs, operators);
-    var operator = allInputs[i];
-    var answer = "";
-    if (allInputs.length > 0 && operator != null) {
-        var firstNum = parseInt(allInputs.join("").split(operator)[0]);
-        var secondNum = parseInt(allInputs.join("").split(operator)[1]);
-
-        switch (operator) {
-            case "+":
-                answer = firstNum + secondNum;
-                break;
-            case "*":
-                answer = firstNum * secondNum;
-                break;
-            case "/":
-                answer = firstNum / secondNum;
-                break;
-            case "-":
-                answer = firstNum - secondNum;
-                break;
-        }
-    }
-    return answer;
-}
-
-function clearDisplay() {
-    allInputs = [];
-    $("#display").val(allInputs);
-}
-
-function appendToDisplay(list) {
-    var a = "";
-    for (var i = 0; i < list.length; i++) {
-        a += list[i].toString();
-        //a += list[i] << 0;
-    }
-    $("#display").val(a);
-}
-
-function indexofOperator(source, target) {
-    for (var i = 0; i < source.length; i++) {
-        for (var j = 0; j < target.length; j++) {
-            if (source[i] === target[j]) {
-                return i;
-            }
-        }
-    }
-    //var result = source.filter(function(item){ return $.inArray(target,item,0)});
-    //return (result.length > 0);
-}
