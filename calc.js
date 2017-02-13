@@ -6,16 +6,18 @@ var keycodes = [8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 107, 109, 106
 $(document).keydown(function (e) {
     e = e || event;
     console.log(e.keyCode);
-    for (var i = 0; i < keycodes.length; i++) {
-        if(e.shiftKey && e.which == 189 ){
-            allInputs.push("-");
 
+    for (var i = 0; i < keycodes.length; i++) {
+        if (e.shiftKey && e.which == 189) {
+            allInputs.push("-");
             break;
         }
-        if(e.shiftKey && e.which == 187){
+
+        if (e.shiftKey && e.which == 187) {
             allInputs.push("+");
             break;
         }
+
         if (e.keyCode >= 106 && e.keyCode <= 111) {
             switch (e.keyCode) {
                 case 106:
@@ -32,17 +34,14 @@ $(document).keydown(function (e) {
                     break;
             }
             break;
-
         }
+
         if (e.keyCode >= 48 && e.keyCode <= 57) {
             allInputs.push(String.fromCharCode(e.keyCode));
-
             appendToDisplay(allInputs);
             break;
-
         } else if (e.keyCode >= 96 && e.keyCode <= 105) {
             allInputs.push(String.fromCharCode(e.keyCode - 48));
-
             appendToDisplay(allInputs);
             break;
         } else if (e.keyCode == 13) {
@@ -51,25 +50,25 @@ $(document).keydown(function (e) {
             allInputs = [];
             break;
         }
-
     }
 })
 
 $(document).ready(function () {
-
     $("#bclr")
         .click(function () {
             allInputs = [];
             $("#display").val(allInputs);
         });
-    $("#b0, #b1,#b2,#b3,#b4,#b5,#b6,#b7,#b8,#b9,#bdel,#beq,#bdiv,#bplus,#btimes,#bsub")
+
+    $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
         .click(function (a) {
             var item = a.target.innerHTML;
+
             allInputs.push(item);
+
             if (numbers.includes(item.toString())) {
                 appendToDisplay(allInputs);
             }
-
 
             if (a.target.innerHTML === "=") {
                 var answer = GetAnswer();
@@ -83,6 +82,7 @@ function GetAnswer() {
     var i = indexofOperator(allInputs, operators);
     var operator = allInputs[i];
     var answer = "";
+
     if (allInputs.length > 0 && operator != null) {
         var firstNum = parseInt(allInputs.join("").split(operator)[0]);
         var secondNum = parseInt(allInputs.join("").split(operator)[1]);
@@ -102,6 +102,7 @@ function GetAnswer() {
                 break;
         }
     }
+
     return answer;
 }
 
