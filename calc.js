@@ -3,21 +3,6 @@ var numList = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var operators = ["-", "+", "/", "*"];
 var keycodes = [8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 107, 109, 106, 111];
 
-//$(document).keypress(function (e) {
-//    e = e || event;
-//    console.log(e.keyCode);
-//    for (var i = 0; i < keycodes.length; i++) {
-
-//        if (e.keyCode >= 106 && e.keyCode <= 111) {
-//            var c = String.fromCharCode(e.keyCode);
-//            allInputs.push(c);
-
-//            appendToDisplay(allInputs);
-//            break;
-//        }
-//    }
-//})
-
 $(document).keydown(function (e) {
     e = e || event;
     console.log(e.keyCode);
@@ -129,7 +114,6 @@ function appendToDisplay(list) {
     var a = "";
     for (var i = 0; i < list.length; i++) {
         a += list[i].toString();
-        //a += list[i] << 0;
     }
     $("#display").val(a);
 }
@@ -142,6 +126,4 @@ function indexofOperator(source, target) {
             }
         }
     }
-    //var result = source.filter(function(item){ return $.inArray(target,item,0)});
-    //return (result.length > 0);
 }
