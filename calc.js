@@ -51,6 +51,18 @@
         return answer;
     }
 
+    function isOperator(symbol) {
+        return OPERATORS.includes(symbol);
+    }
+
+    function isNumber(symbol) {
+        return NUMBERS.includes(symbol);
+    }
+
+    function isFinal(symbol) {
+        return FINALIZERS.includes(symbol);
+    }
+
     function toString() {
         return symbols.join("");
     }
@@ -60,12 +72,14 @@
     }
 
     return {
-        operators: OPERATORS,
-        numbers: NUMBERS,
-        finalizers: FINALIZERS,
         append: append,
         clear: clear,
         calculate: calculate,
+        helpers: {
+            isOperator: isOperator,
+            isNumber: isNumber,
+            isFinal: isFinal
+        },
         toString: toString,
         toArray: toArray
     };
@@ -90,16 +104,16 @@ $(document).ready(function () {
 });
 
 function processSymbol(symbol) {
-    if (expression.operators.includes(symbol)) {
+    if (expression.helpers.isOperator(symbol)) {
         expression.append(symbol);
     }
 
-    if (expression.numbers.includes(symbol)) {
+    if (expression.helpers.isNumber(symbol)) {
         expression.append(symbol);
         display(expression.toString());
     }
 
-    if (expression.finalizers.includes(symbol)) {
+    if (expression.helpers.isFinal(symbol)) {
         display(expression.calculate());
         expression.clear();
     }
