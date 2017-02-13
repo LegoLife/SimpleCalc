@@ -1,5 +1,5 @@
 ﻿var allInputs = [];
-var numList = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var operators = ["-", "+", "/", "*"];
 var keycodes = [8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 107, 109, 106, 111];
 
@@ -66,7 +66,7 @@ $(document).ready(function () {
         .click(function (a) {
             var item = a.target.innerHTML;
             allInputs.push(item);
-            if (numList.includes(item.toString())) {
+            if (numbers.includes(item.toString())) {
                 appendToDisplay(allInputs);
             }
 
