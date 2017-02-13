@@ -1,28 +1,20 @@
 ﻿var allInputs = [];
+var operators = ["-", "+", "/", "*"];
+var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 $(document).keydown(function (e) {
     console.log(e.key);
 
-    if (e.key === "-") {
-        allInputs.push("-");
+    if (operators.includes(e.key)) {
+        allInputs.push(e.key);
     }
 
-    if (e.key === "+") {
-        allInputs.push("+");
-    }
-
-    if (e.key === "*") {
-        allInputs.push("*");
-    }
-
-    if (e.key === "/") {
-        allInputs.push("/");
-    }
-
-    if (e.key >= "0" && e.key <= "9") {
+    if (numbers.includes(e.key)) {
         allInputs.push(e.key);
         appendToDisplay(allInputs);
-    } else if (e.key == "Enter") {
+    }
+
+    if (e.key == "Enter") {
         var answer = getAnswer();
         $("#display").val(answer);
         allInputs = [];
@@ -34,7 +26,6 @@ $(document).ready(function () {
 
     $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
         .click(function (e) {
-            var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
             var symbol = e.target.innerHTML;
 
             allInputs.push(symbol);
@@ -52,7 +43,6 @@ $(document).ready(function () {
 });
 
 function getAnswer() {
-    var operators = ["-", "+", "/", "*"];
     var i = indexOfOperator(allInputs, operators);
     var operator = allInputs[i];
     var answer = "";
