@@ -143,10 +143,12 @@ $(document).keydown(function (e) {
 });
 
 $(document).ready(function () {
-    $("#bclr").click(calculator.clear);
+    var $symbolButtons = $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub");
+    var $clearButton = $("#bclr");
 
-    $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
-        .click(function (e) {
-            calculator.process(e.target.innerHTML);
-        });
+    $symbolButtons.on('click', function (e) {
+        calculator.process(e.target.innerHTML);
+    });
+
+    $clearButton.on('click', calculator.clear);
 });
