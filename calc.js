@@ -30,7 +30,7 @@ $(document).ready(function () {
 
             allInputs.push(symbol);
 
-            if (numbers.includes(symbol.toString())) {
+            if (numbers.includes(symbol)) {
                 appendToDisplay(allInputs);
             }
 
