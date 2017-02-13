@@ -50,7 +50,7 @@ $(document).keydown(function (e) {
             break;
         }
     }
-})
+});
 
 $(document).ready(function () {
     $("#bclr")
