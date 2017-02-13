@@ -1,5 +1,10 @@
 ﻿var expression = (function() {
-    var OPERATORS = ["-", "+", "/", "*"];
+    var OPERATORS = {
+        "-": function (a, b) { return a - b; },
+        "+": function (a, b) { return a + b; },
+        "*": function (a, b) { return a * b; },
+        "/": function (a, b) { return a / b; }
+    };
     var NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
     var FINALIZERS = ["=", "Enter"];
     var symbols = [];
@@ -13,46 +18,36 @@
     }
 
     function calculate() {
-        function indexOfOperator(source, target) {
-            for (var i = 0; i < source.length; i++) {
-                for (var j = 0; j < target.length; j++) {
-                    if (source[i] === target[j]) {
-                        return i;
-                    }
-                }
-            }
-        }
-
         var parts = toArray();
-        var i = indexOfOperator(parts, OPERATORS);
-        var operator = parts[i];
-        var answer = "";
+        var result;
 
-        if (parts.length > 0 && operator != null) {
-            var firstNum = parseInt(parts.join("").split(operator)[0]);
-            var secondNum = parseInt(parts.join("").split(operator)[1]);
+        for (var i = 0; i < parts.length; i++) {
+            var part = parts[i];
 
-            switch (operator) {
-                case "+":
-                    answer = firstNum + secondNum;
-                    break;
-                case "*":
-                    answer = firstNum * secondNum;
-                    break;
-                case "/":
-                    answer = firstNum / secondNum;
-                    break;
-                case "-":
-                    answer = firstNum - secondNum;
-                    break;
+            if (isOperator(part)) {
+                // All operators are assumed to be binary
+                var isFirstOperator = i === 1;
+
+                var a;
+
+                if (isFirstOperator) {
+                    a = parts[i - 1];
+                } else {
+                    a = result;
+                }
+
+                var b = parts[i + 1];
+                var associatedFn = OPERATORS[part];
+
+                result = associatedFn(a, b);
             }
         }
 
-        return answer;
+        return result;
     }
 
     function isOperator(symbol) {
-        return OPERATORS.includes(symbol);
+        return Object.keys(OPERATORS).includes(symbol);
     }
 
     function isNumber(symbol) {
