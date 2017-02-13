@@ -104,39 +104,49 @@
 }());
 
 
+var calculator = (function(expression) {
+    function display(string) {
+        $("#display").val(string);
+    }
+
+    function process(symbol) {
+        if (expression.helpers.isOperator(symbol)) {
+            expression.append(symbol);
+        }
+
+        if (expression.helpers.isNumber(symbol)) {
+            expression.append(symbol);
+            display(expression.toString());
+        }
+
+        if (expression.helpers.isFinal(symbol)) {
+            display(expression.calculate());
+            expression.clear();
+        }
+    }
+
+    function clear() {
+        display("");
+        expression.clear();
+    }
+
+    return {
+        process: process,
+        clear: clear
+    };
+}(expression));
+
+
 $(document).keydown(function (e) {
     console.log(e.key);
-    processSymbol(e.key);
+    calculator.process(e.key);
 });
 
 $(document).ready(function () {
-    $("#bclr").click(function () {
-        expression.clear();
-        display("");
-    });
+    $("#bclr").click(calculator.clear);
 
     $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
         .click(function (e) {
-            processSymbol(e.target.innerHTML);
+            calculator.process(e.target.innerHTML);
         });
 });
-
-function processSymbol(symbol) {
-    if (expression.helpers.isOperator(symbol)) {
-        expression.append(symbol);
-    }
-
-    if (expression.helpers.isNumber(symbol)) {
-        expression.append(symbol);
-        display(expression.toString());
-    }
-
-    if (expression.helpers.isFinal(symbol)) {
-        display(expression.calculate());
-        expression.clear();
-    }
-}
-
-function display(string) {
-    $("#display").val(string);
-}
