@@ -11,7 +11,7 @@ $(document).keydown(function (e) {
 
     if (numbers.includes(e.key)) {
         allInputs.push(e.key);
-        appendToDisplay(allInputs);
+        displayCurrentExpression();
     }
 
     if (e.key == "Enter") {
@@ -29,7 +29,7 @@ $(document).ready(function () {
             allInputs.push(symbol);
 
             if (numbers.includes(symbol)) {
-                appendToDisplay(allInputs);
+                displayCurrentExpression();
             }
 
             if (symbol === "=") {
@@ -67,19 +67,21 @@ function getAnswer() {
 }
 
 function clearDisplay() {
+    display("");
     allInputs = [];
-    $("#display").val(allInputs);
 }
 
 function displayResult() {
-    var answer = getAnswer();
-    $("#display").val(answer);
+    display(getAnswer());
     allInputs = [];
 }
 
-function appendToDisplay(list) {
-    var expression = list.join("");
-    $("#display").val(expression);
+function displayCurrentExpression() {
+    display(allInputs.join(""));
+}
+
+function display(string) {
+    $("#display").val(string);
 }
 
 function indexOfOperator(source, target) {
