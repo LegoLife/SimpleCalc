@@ -15,9 +15,7 @@ $(document).keydown(function (e) {
     }
 
     if (e.key == "Enter") {
-        var answer = getAnswer();
-        $("#display").val(answer);
-        allInputs = [];
+        displayResult();
     }
 });
 
@@ -35,9 +33,7 @@ $(document).ready(function () {
             }
 
             if (symbol === "=") {
-                var answer = getAnswer();
-                $("#display").val(answer);
-                allInputs = [];
+                displayResult();
             }
         });
 });
@@ -73,6 +69,12 @@ function getAnswer() {
 function clearDisplay() {
     allInputs = [];
     $("#display").val(allInputs);
+}
+
+function displayResult() {
+    var answer = getAnswer();
+    $("#display").val(answer);
+    allInputs = [];
 }
 
 function appendToDisplay(list) {
