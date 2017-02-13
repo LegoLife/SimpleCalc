@@ -6,7 +6,10 @@ $(document).keydown(function (e) {
 });
 
 $(document).ready(function () {
-    $("#bclr").click(clearDisplay);
+    $("#bclr").click(function () {
+        clearExpression();
+        display("");
+    });
 
     $("#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #bdel, #beq, #bdiv, #bplus, #btimes, #bsub")
         .click(function (e) {
@@ -25,11 +28,14 @@ function processSymbol(symbol) {
 
     if (numbers.includes(symbol)) {
         appendToExpression(symbol);
-        displayCurrentExpression();
+        display(getExpression());
     }
 
     if (finalizers.includes(symbol)) {
-        displayResult(operators);
+        display(
+            getAnswer(getExpressionParts(), operators)
+        );
+        clearExpression();
     }
 }
 
@@ -75,22 +81,6 @@ function getExpressionParts() {
 
 function getExpression() {
     return allInputs.join("");
-}
-
-function clearDisplay() {
-    display("");
-    clearExpression();
-}
-
-function displayResult(operators) {
-    display(
-        getAnswer(getExpressionParts(), operators)
-    );
-    clearExpression();
-}
-
-function displayCurrentExpression() {
-    display(getExpression());
 }
 
 function display(string) {
