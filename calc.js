@@ -103,10 +103,7 @@ function clearDisplay() {
 }
 
 function appendToDisplay(list) {
-    var expression = "";
-    for (var i = 0; i < list.length; i++) {
-        expression += list[i].toString();
-    }
+    var expression = list.join("");
     $("#display").val(expression);
 }
 
