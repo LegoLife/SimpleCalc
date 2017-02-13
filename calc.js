@@ -1,4 +1,36 @@
-﻿var allInputs = [];
+﻿var expression = (function() {
+    var OPERATORS = ["-", "+", "/", "*"];
+    var NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    var FINALIZERS = ["=", "Enter"];
+    var symbols = [];
+
+    function append(symbol) {
+        symbols.push(symbol);
+    }
+
+    function clear() {
+        symbols = [];
+    }
+
+    function toString() {
+        return symbols.join("");
+    }
+
+    function toArray() {
+        return symbols;
+    }
+
+    return {
+        operators: OPERATORS,
+        numbers: NUMBERS,
+        finalizers: FINALIZERS,
+        append: append,
+        clear: clear,
+        toString: toString,
+        toArray: toArray
+    };
+}());
+
 
 $(document).keydown(function (e) {
     console.log(e.key);
@@ -7,7 +39,7 @@ $(document).keydown(function (e) {
 
 $(document).ready(function () {
     $("#bclr").click(function () {
-        clearExpression();
+        expression.clear();
         display("");
     });
 
@@ -18,24 +50,20 @@ $(document).ready(function () {
 });
 
 function processSymbol(symbol) {
-    var operators = ["-", "+", "/", "*"];
-    var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    var finalizers = ["=", "Enter"];
-
-    if (operators.includes(symbol)) {
-        appendToExpression(symbol);
+    if (expression.operators.includes(symbol)) {
+        expression.append(symbol);
     }
 
-    if (numbers.includes(symbol)) {
-        appendToExpression(symbol);
-        display(getExpression());
+    if (expression.numbers.includes(symbol)) {
+        expression.append(symbol);
+        display(expression.toString());
     }
 
-    if (finalizers.includes(symbol)) {
+    if (expression.finalizers.includes(symbol)) {
         display(
-            getAnswer(getExpressionParts(), operators)
+            getAnswer(expression.toArray(), expression.operators)
         );
-        clearExpression();
+        expression.clear();
     }
 }
 
@@ -65,22 +93,6 @@ function getAnswer(expressionParts, operators) {
     }
 
     return answer;
-}
-
-function clearExpression() {
-    allInputs = [];
-}
-
-function appendToExpression(symbol) {
-    allInputs.push(symbol);
-}
-
-function getExpressionParts() {
-    return allInputs;
-}
-
-function getExpression() {
-    return allInputs.join("");
 }
 
 function display(string) {
