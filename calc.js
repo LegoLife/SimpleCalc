@@ -12,6 +12,45 @@
         symbols = [];
     }
 
+    function calculate() {
+        function indexOfOperator(source, target) {
+            for (var i = 0; i < source.length; i++) {
+                for (var j = 0; j < target.length; j++) {
+                    if (source[i] === target[j]) {
+                        return i;
+                    }
+                }
+            }
+        }
+
+        var parts = toArray();
+        var i = indexOfOperator(parts, OPERATORS);
+        var operator = parts[i];
+        var answer = "";
+
+        if (parts.length > 0 && operator != null) {
+            var firstNum = parseInt(parts.join("").split(operator)[0]);
+            var secondNum = parseInt(parts.join("").split(operator)[1]);
+
+            switch (operator) {
+                case "+":
+                    answer = firstNum + secondNum;
+                    break;
+                case "*":
+                    answer = firstNum * secondNum;
+                    break;
+                case "/":
+                    answer = firstNum / secondNum;
+                    break;
+                case "-":
+                    answer = firstNum - secondNum;
+                    break;
+            }
+        }
+
+        return answer;
+    }
+
     function toString() {
         return symbols.join("");
     }
@@ -26,6 +65,7 @@
         finalizers: FINALIZERS,
         append: append,
         clear: clear,
+        calculate: calculate,
         toString: toString,
         toArray: toArray
     };
@@ -60,51 +100,11 @@ function processSymbol(symbol) {
     }
 
     if (expression.finalizers.includes(symbol)) {
-        display(
-            getAnswer(expression.toArray(), expression.operators)
-        );
+        display(expression.calculate());
         expression.clear();
     }
 }
 
-function getAnswer(expressionParts, operators) {
-    var i = indexOfOperator(expressionParts, operators);
-    var operator = expressionParts[i];
-    var answer = "";
-
-    if (expressionParts.length > 0 && operator != null) {
-        var firstNum = parseInt(expressionParts.join("").split(operator)[0]);
-        var secondNum = parseInt(expressionParts.join("").split(operator)[1]);
-
-        switch (operator) {
-            case "+":
-                answer = firstNum + secondNum;
-                break;
-            case "*":
-                answer = firstNum * secondNum;
-                break;
-            case "/":
-                answer = firstNum / secondNum;
-                break;
-            case "-":
-                answer = firstNum - secondNum;
-                break;
-        }
-    }
-
-    return answer;
-}
-
 function display(string) {
     $("#display").val(string);
-}
-
-function indexOfOperator(source, target) {
-    for (var i = 0; i < source.length; i++) {
-        for (var j = 0; j < target.length; j++) {
-            if (source[i] === target[j]) {
-                return i;
-            }
-        }
-    }
 }
