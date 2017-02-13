@@ -15,29 +15,19 @@
 
     const calculate = () => {
         const parts = toArray();
-        let result;
 
-        for (let i = 0; i < parts.length; i++) {
-            const part = parts[i];
-
-            if (isOperator(part)) {
-                // All operators are assumed to be binary
-                const isFirstOperator = i === 1;
-
-                let a;
-
-                if (isFirstOperator) {
-                    a = parts[i - 1];
+        const result = parts.reduce(
+            (resultSoFar, part, index, allParts) => {
+                if (isOperator(part)) {
+                    // All operators are assumed to be binary
+                    const nextPart = allParts[index + 1];
+                    const operatorFn = OPERATORS[part];
+                    return operatorFn(resultSoFar, nextPart);
                 } else {
-                    a = result;
+                    return resultSoFar;
                 }
-
-                const b = parts[i + 1];
-                const associatedFn = OPERATORS[part];
-
-                result = associatedFn(a, b);
             }
-        }
+        );
 
         return result;
     };
@@ -49,27 +39,26 @@
     const toString = () => symbols.join("");
 
     const toArray = () => {
-        const parts = [];
+        const lastOf = (array) => array[array.length - 1]; // [1, 2, 3] => 3
+        const initial = (array) => array.slice(0, -1);     // [1, 2, 3] => [1, 2]
 
         // Concatenate consecutive non-operator symbols into their own parts
-        for (let i = 0; i < symbols.length; i++) {
-            const symbol = symbols[i];
-            const previousPart = parts[parts.length - 1];
-            const isFirstSymbol = i === 0;
+        const mergedParts = symbols.reduce(
+            (partsSoFar, symbol) => {
+                const previousPart = lastOf(partsSoFar);
 
-            if (isOperator(symbol) || isOperator(previousPart) || isFirstSymbol) {
-                parts.push(symbol);
-            } else {
-                parts[parts.length - 1] += symbol;
+                if (isOperator(symbol) || isOperator(previousPart)) {
+                    return [...partsSoFar, symbol];
+                } else {
+                    return [...initial(partsSoFar), previousPart.concat(symbol)];
+                }
             }
-        }
+        );
 
         // Convert non-operator parts into numbers
-        for (let i = 0; i < parts.length; i++) {
-            if (!isOperator(parts[i])) {
-                parts[i] = Number(parts[i]);
-            }
-        }
+        const parts = mergedParts.map(
+            (part) => isOperator(part) ? part : Number(part)
+        );
 
         return parts;
     };
