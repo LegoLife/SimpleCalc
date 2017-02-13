@@ -68,7 +68,30 @@
     }
 
     function toArray() {
-        return symbols;
+        var i;
+        var parts = [];
+
+        // Concatenate consecutive non-operator symbols into their own parts
+        for (i = 0; i < symbols.length; i++) {
+            var symbol = symbols[i];
+            var previousPart = parts[parts.length - 1];
+            var isFirstSymbol = i === 0;
+
+            if (isOperator(symbol) || isOperator(previousPart) || isFirstSymbol) {
+                parts.push(symbol);
+            } else {
+                parts[parts.length - 1] += symbol;
+            }
+        }
+
+        // Convert non-operator parts into numbers
+        for (i = 0; i < parts.length; i++) {
+            if (!isOperator(parts[i])) {
+                parts[i] = Number(parts[i]);
+            }
+        }
+
+        return parts;
     }
 
     return {
