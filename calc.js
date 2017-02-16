@@ -1,5 +1,7 @@
-﻿var allInputs = [];
+﻿
+var allInputs = [];
 $(document).ready(function () {
+
     $(document).keydown(function(){
         
         allInputs = $("#display").val().split("");
@@ -12,16 +14,15 @@ $(document).ready(function () {
     $(document).keypress(function () {
 
     var key = String.fromCharCode(event.keyCode);
-    
-var numList = [".","0", "1", "2", "3", "4", "5", "6", "7", "8", "9","-", "+", "/", "*","="];
-    for (var i = 0; i <= numList.length+1; i++) 
+    var acceptedInputs = [".","0", "1", "2", "3", "4", "5", "6", "7", "8", "9","-", "+", "/", "*","="];
+
+    for (var i = 0; i <= acceptedInputs.length+1; i++) 
     {
-        if(numList[i]===key)
-        {
+        if(acceptedInputs[i]===key){
             allInputs.push(key);
             break;
-            
-        }
+            }
+
         if (event.keyCode === 13) {
         allInputs.push(key);
         var itemtoremove = "=";
@@ -30,20 +31,17 @@ var numList = [".","0", "1", "2", "3", "4", "5", "6", "7", "8", "9","-", "+", "/
         break;
         }
     }
-    
-    appendToDisplay(allInputs);
+   appendToDisplay(allInputs);
 })
-    $("#bclr")
-        .click(function () {
-            allInputs = [];
-            $("#display").val(allInputs);
-        });
-    $("#b0, #b1,#b2,#b3,#b4,#b5,#b6,#b7,#b8,#b9,#bdel,#beq,#bdiv,#bplus,#btimes,#bsub").click(function (a) {
-        var item = a.target.innerHTML;
+   
+    $("#bclr").click(clearDisplay);
+
+    $("#b0, #b1,#b2,#b3,#b4,#b5,#b6,#b7,#b8,#b9,#bdel,#beq,#bdiv,#bplus,#btimes,#bsub").click(function (e) {
+        var item = e.target.innerHTML;
         allInputs.push(item);
         appendToDisplay(allInputs);
-        if (item === "=") 
-        {
+
+        if (item === "="){
             var itemtoremove = "=";
             allInputs.splice($.inArray(itemtoremove, allInputs), 1);
             CalculateAndDisplayAnswer(allInputs);
@@ -56,24 +54,22 @@ function clearDisplay() {
     $("#display").val(allInputs);
 }
 
-function appendToDisplay(list) {
-    var a = "";
-    for (var i = 0; i < list.length; i++) {
-        a += list[i].toString();
-    }
-    $("#display").val(a);
+function appendToDisplay(listofItemstoAppend) {
+   
+    var joinedlistforDisplay = listofItemstoAppend.join("");
+    $("#display").val(joinedlistforDisplay);
 }
 
-function CalculateAndDisplayAnswer(x) {
+function CalculateAndDisplayAnswer(arrayOfinputsFromtheUser) {
     
-    if (x.length == 0) {
+    if (arrayOfinputsFromtheUser.length == 0) {
         $("#display").val(0);
     } else {
 
-        var a = Function("return " + x.join(""))();
-        $("#display").val(a.toString());
+        var calculatedAnswer = Function("return " + arrayOfinputsFromtheUser.join(""))();
+        $("#display").val(calculatedAnswer.toString());
     }
-    allInputs = [a.toString()];
+    allInputs = [calculatedAnswer.toString()];
 }
 
 

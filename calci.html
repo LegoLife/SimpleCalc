@@ -1,16 +1,24 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" >
+
+<head id="calchead">
     <meta charset="utf-8" />
     <title>Calculator</title>
     <link href="bootstrap.css" rel="stylesheet" />
-    <script src="jquery-1.9.1.js"></script>
+    <script src="jquery-3.1.1.js"></script>
+    <!--<link rel="shortcut icon" type="image/png" href="jasmine/images/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-core/jasmine.css">
+    <script type="text/javascript" src="jasmine/lib/jasmine-core/jasmine.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine-core/jasmine-html.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine-core/boot.js"></script>-->
+
     <script src="calc.js"></script>
 </head>
+
 <body>
 
-    <div align="center">
+    <div align="center" id="calcbody">
         <input class="input-lg" type="text" id="display" />
         <br />
         <table class="table-condensed table-bordered">
@@ -37,10 +45,14 @@
                 <td><button class="btn-lg" type="button" id="b0">0</button></td>
                 <td><button class="btn-lg" type="button" id="bplus">+</button></td>
                 <td><button class="btn-lg" type="button" id="beq">=</button></td>
-                <td><button class="btn-lg" type="button" id="bdiv">\</button></td>
+                <td><button class="btn-lg" type="button" id="bdiv">/</button></td>
             </tr>
         </table>
         <br />
     </div>
+
+    
+    
+    
 </body>
 </html>
