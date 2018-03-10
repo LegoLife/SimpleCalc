@@ -1,29 +1,22 @@
 ﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" >
-
-<head id="calchead">
     <meta charset="utf-8" />
     <title>Calculator</title>
-    <link href="bootstrap.css" rel="stylesheet" />
-    <script src="jquery-3.1.1.js"></script>
-    <!--<link rel="shortcut icon" type="image/png" href="jasmine/images/jasmine_favicon.png">
-    <link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-core/jasmine.css">
-    <script type="text/javascript" src="jasmine/lib/jasmine-core/jasmine.js"></script>
-    <script type="text/javascript" src="jasmine/lib/jasmine-core/jasmine-html.js"></script>
-    <script type="text/javascript" src="jasmine/lib/jasmine-core/boot.js"></script>-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 
-    <script src="calc.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+    <script src="js/index.js"></script>
 </head>
-
-<body>
-
-    <div align="center" id="calcbody">
+<body style="padding-top: 10%">
+    <div class="well" align="center" id="calcbody">
+        <h4>Calculator</h4>
         <input class="input-lg" type="text" id="display" />
         <br />
         <table class="table-condensed table-bordered">
             <tr>
-
                 <td><button class="btn-lg" type="button" id="b1">1</button></td>
                 <td><button class="btn-lg" type="button" id="b2">2</button></td>
                 <td><button class="btn-lg" type="button" id="b3">3</button></td>
@@ -49,10 +42,9 @@
             </tr>
         </table>
         <br />
+        <p>Last Updated March 2018</p>
     </div>
-
-    
-    
-    
 </body>
+
+
 </html>
